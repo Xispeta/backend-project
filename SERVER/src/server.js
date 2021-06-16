@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const config = require("./config");
 const db = require("./db");
 const breedRouter = require('./entities/dog/breed.router');
+const subbreedRouter = require('./entities/subbreed/subbreed.router');
 //const Breed = require('./entities/dog/breed.model');
 //const breedControllers= require('./entities/dog/breed.controllers');
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 app.use("/breeds",breedRouter);
+app.use("/subbreeds",subbreedRouter);
 
 /*app.get("/breeds",breedControllers.getMany);
 app.post("/breed",breedControllers.createOne);*/
