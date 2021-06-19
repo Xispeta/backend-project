@@ -7,6 +7,7 @@ const connect = () => {
     useUnifiedTopology: true,
     useCreateIndex: true,
     useFindAndModify: true,
+    //autoIndex:true,
   });
 };
 

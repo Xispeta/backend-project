@@ -1,44 +1,39 @@
 const mongoose = require("mongoose");
-
+const uniqueValidator = require("mongoose-unique-validator");
 
 const breedSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
       uppercase: true,
       maxLenght: 25,
+      
     },
     size: {
       type: String,
       required: true,
       uppercase: true,
-      enum: {
-        values: ["BIG", "MEDIUM", "SMALL", "TOY"],
-        message: "{VALUE} is not supported, values BIG, MEDIUM, SMALL OR TOY",
-      },
+      enum: ["BIG", "MEDIUM", "SMALL", "TOY"],
+      message: "{VALUE} is not supported, values BIG, MEDIUM, SMALL OR TOY",
     },
     adultWeight: {
-      type: [Number, "{VALUE} is not an integer value"],
-      // min:3 && max:100
-      validate: {
-        validator: function (adultWe) {
-          debugger;
-          console.log(adultWe);
-          if (adultWe < 3 || adultWe > 100) {
-            return false;
-          }
-        },
-        message: "Weight {VALUE}, weight of the dog > 3Kg or <1 00 Kg",
-      },
+      type: Number,
+      min: [3, "Weight {VALUE}, weight of the dog > 3Kg"],
+      max: [100, "Weight {VALUE}, weight of the dog < 100 Kg"],
       required: true,
     },
   },
+
   { timestamps: true }
 );
 
-const Breed = mongoose.model("breed", breedSchema);
+breedSchema.path("size").options.enum;
 
-module.exports = Breed;
+breedSchema.index({ name: 1 }, { unique: true , dropDrups:true});
+breedSchema.plugin(uniqueValidator);
+
+const breed = mongoose.model("breed", breedSchema);
+
+module.exports = breed;

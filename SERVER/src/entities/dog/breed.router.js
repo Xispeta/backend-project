@@ -6,9 +6,10 @@ const breeds = Router();
 breeds.get('/',breedControllers.getMany);
 breeds.post('/',breedControllers.createOne);
 
-breeds.get('/:id',breedControllers.getOne);
-breeds.put('/:id',breedControllers.updateOne);
-breeds.delete('/:id',breedControllers.removeOne);
+breeds.get('/:breed',breedControllers.getOne);
+breeds.put('/:breed',breedControllers.updateOne);
+breeds.delete('/:breed',breedControllers.removeOne);
+breeds.delete('/',breedControllers.removeAll);
 
 
 module.exports = breeds;

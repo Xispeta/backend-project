@@ -12,7 +12,7 @@ const getMany = async (req, res) => {
 
 const createOne = async (req, res) => {
   try {
-    const doc = await Breed.create(req.body);
+    const doc = await Breed.create({ ...req.body });
     res.status(201).json({ results: doc });
   } catch (e) {
     console.log(e);
@@ -22,12 +22,11 @@ const createOne = async (req, res) => {
 
 const getOne = async (req, res) => {
   try {
-    console.log(req.params.id);
-    const doc = await Breed.findOne({ _id: req.params.id }).lean().exec();
+    const doc = await Breed.findOne({ _id: req.params.breed }).lean().exec();
     if (!doc) {
       return res
         .status(400)
-        .json({ error: `Breed with ID ${re.params.id} not found` });
+        .json({ error: `Breed with ID ${req.params.breed} not found` });
     }
     res.status(201).json({ results: doc });
   } catch (e) {
@@ -38,17 +37,20 @@ const getOne = async (req, res) => {
 
 const updateOne = async (req, res) => {
   try {
-    
-    const doc = await Breed.findOneAndUpdate({ _id: req.params.id }, req.body, {
-      new: true,
-    })
+    const doc = await Breed.findOneAndUpdate(
+      { _id: req.params.breed },
+      req.body,
+      {
+        new: true,
+      }
+    )
       .lean()
       .exec();
     if (!doc) {
       return res
         .status(400)
-        .json({ error: `Breed with ID ${re.params.id} not found` });
-    }    
+        .json({ error: `Breed with ID ${req.params.breed} not found` });
+    }
     res.status(200).json({ results: doc });
   } catch (e) {
     console.log(e);
@@ -58,13 +60,28 @@ const updateOne = async (req, res) => {
 
 const removeOne = async (req, res) => {
   try {
-    const doc = await Breed.findOneAndRemove({ _id: req.params.id })
+    const doc = await Breed.findOneAndRemove({ _id: req.params.breed })
       .lean()
       .exec();
     if (!doc) {
       return res
         .status(400)
-        .json({ error: `Breed with ID ${re.params.id} not found` });
+        .json({ error: `Breed with ID ${req.params.breed} not found` });
+    }
+    res.status(200).json({ results: doc });
+  } catch (e) {
+    console.log(e);
+    res.status(400).end();
+  }
+};
+
+const removeAll = async (req, res) => {
+  try {
+    const doc = await Breed.deleteMany().lean().exec();
+    if (!doc) {
+      return res
+        .status(400)
+        .json({ error: `Breed with ID ${req.params.breed} not found` });
     }
     res.status(200).json({ results: doc });
   } catch (e) {
@@ -79,4 +96,5 @@ module.exports = {
   getOne,
   updateOne,
   removeOne,
+  removeAll,
 };
