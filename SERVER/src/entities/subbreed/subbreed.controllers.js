@@ -1,8 +1,19 @@
+const Subbreed = require("./subbreed.model");
 const Subbred = require("./subbreed.model");
+
+const breedGetMany = async (req, res) => {
+  try {
+    const docs = await Subbreed.find({ breed: req.params.breed }).lean().exec();
+    res.status(200).json({ data: docs });
+  } catch (e) {
+    console.error(e);
+    res.status(400).end();
+  }
+};
 
 const getMany = async (req, res) => {
   try {
-    const docs = await Subbred.find().populate("breed").lean().exec();;
+    const docs = await Subbred.find().populate("breed").lean().exec();
     res.status(200).json({ results: docs });
   } catch (e) {
     console.log(e);
@@ -10,7 +21,7 @@ const getMany = async (req, res) => {
   }
 };
 
-const createOne = async (req, res) => {67
+const createOne = async (req, res) => {  
   try {
     const doc = await Subbred.create({
       breed: req.params.breed,
@@ -56,6 +67,7 @@ const removeAll = async (req, res) => {
 };
 
 module.exports = {
+  breedGetMany, 
   getMany,
   createOne,
   removeOne,

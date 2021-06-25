@@ -12,7 +12,9 @@ const getMany = async (req, res) => {
 
 const createOne = async (req, res) => {
   try {
+    //console.log(`create one ${JSON.stringify(req.body)}` );
     const doc = await Breed.create({ ...req.body });
+    //console.log(`create one doc ${JSON.stringify(doc)}` );
     res.status(201).json({ results: doc });
   } catch (e) {
     console.log(e);
@@ -22,6 +24,7 @@ const createOne = async (req, res) => {
 
 const getOne = async (req, res) => {
   try {
+    //console.log(`getOne ${JSON.stringify(req.params.breed)}`);
     const doc = await Breed.findOne({ _id: req.params.breed }).lean().exec();
     if (!doc) {
       return res
